@@ -445,6 +445,13 @@ function App() {
     }
   }, [playerName, isHost, isOnline])
 
+  // Send name updates to host (Clients only)
+  useEffect(() => {
+    if (!isHost && isOnline && hostConnRef.current?.open) {
+      hostConnRef.current.send({ type: 'UPDATE_NAME', payload: { name: playerName } })
+    }
+  }, [playerName, isHost, isOnline])
+
   // Push board updates to host (Active Client-Setter only)
   useEffect(() => {
     if (isOnline && !isHost && currentTurnId === peerRef.current?.id && gameState === 'playing') {
