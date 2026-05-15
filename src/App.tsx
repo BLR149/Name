@@ -246,6 +246,8 @@ function App() {
           setGameState('input')
           setTurnPhase('setting')
           setMovieName("")
+          setInputValue("")
+          setGameWordInput("")
           setGuessedLetters(new Set())
           setWrongLetters([])
           setWrongGuesses(0)
@@ -285,6 +287,8 @@ function App() {
         setGameState('input') // Moves setter to word entry screen
         setTurnPhase('setting')
         setMovieName("")
+        setInputValue("")
+        setGameWordInput("")
         setGuessedLetters(new Set())
         setWrongLetters([])
         setWrongGuesses(0)
@@ -310,6 +314,7 @@ function App() {
           setGameState('playing')
           setTurnPhase('guessing')
           setInputValue("")
+          setGameWordInput("")
           setGuessedLetters(new Set())
           setWrongLetters([])
           setWrongGuesses(0)
@@ -318,6 +323,8 @@ function App() {
             type: 'SET_WORD',
             payload: { movieName: nameToGuess, gameWord: gameWordInput.trim().toUpperCase() || DEFAULT_GAME_NAME }
           })
+          setInputValue("")
+          setGameWordInput("")
         }
       } else {
         setMovieName(nameToGuess)
@@ -325,6 +332,7 @@ function App() {
         setGameWord(customWord)
         setGameState('playing')
         setInputValue("")
+        setGameWordInput("")
         setGuessedLetters(new Set())
         setWrongLetters([])
         setWrongGuesses(0)
@@ -424,6 +432,7 @@ function App() {
     setGameState('input')
     setMovieName("")
     setInputValue("")
+    setGameWordInput("")
     setGuessedLetters(new Set())
     setWrongLetters([])
     setWrongGuesses(0)
