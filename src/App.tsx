@@ -162,6 +162,7 @@ function App() {
         case 'UPDATE_NAME':
           setPlayers(prev => {
             const newPlayers = prev.map(p => p.id === conn.peer ? { ...p, name: msg.payload.name } : p)
+            setTimeout(() => syncStateToAll(), 100)
             return newPlayers
           })
           break
@@ -441,16 +442,6 @@ function App() {
   useEffect(() => {
     if (isHost && isOnline && peerRef.current?.id) {
       setPlayers(prev => prev.map(p => p.id === peerRef.current?.id ? { ...p, name: playerName } : p))
-    }
-  }, [playerName, isHost, isOnline])
-
-  // Send name updates to host (Clients only) - Debounced to prevent disconnects
-  useEffect(() => {
-    if (!isHost && isOnline && hostConnRef.current?.open) {
-      const timeout = setTimeout(() => {
-        hostConnRef.current?.send({ type: 'UPDATE_NAME', payload: { name: playerName } })
-      }, 500)
-      return () => clearTimeout(timeout)
     }
   }, [playerName, isHost, isOnline])
 
