@@ -262,7 +262,14 @@ function App() {
     if (!isHostRef.current) return
 
     setPlayers(prev => {
-      const newPlayers = prev.map(p => p.id === winnerId ? { ...p, score: p.score + 1 } : p)
+      let newPlayers;
+      if (winnerId === 'GUESSERS') {
+        // Give point to all players who are NOT the setter
+        newPlayers = prev.map(p => p.id !== currentTurnIdRef.current ? { ...p, score: p.score + 1 } : p)
+      } else {
+        newPlayers = prev.map(p => p.id === winnerId ? { ...p, score: p.score + 1 } : p)
+      }
+      
       const winner = newPlayers.find(p => p.score >= targetPoints)
       
       if (winner) {
@@ -391,10 +398,7 @@ function App() {
         if (isOnline) {
           console.log('Guesser wins round!')
           if (isHost) {
-            // Give point to all players who are NOT the setter
-            players.forEach(p => {
-              if (p.id !== currentTurnId) handleRoundEnd(p.id)
-            })
+            handleRoundEnd('GUESSERS')
           } else {
             hostConnRef.current?.send({ type: 'ROUND_END', payload: { winnerId: 'GUESSERS' } })
           }
