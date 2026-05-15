@@ -429,6 +429,13 @@ function App() {
     setWrongGuesses(0)
   }
 
+  // Keep host name in sync in the players list
+  useEffect(() => {
+    if (isHost && isOnline && peerRef.current?.id) {
+      setPlayers(prev => prev.map(p => p.id === peerRef.current?.id ? { ...p, name: playerName } : p))
+    }
+  }, [playerName, isHost, isOnline])
+
   // Push board updates to host (Active Client-Setter only)
   useEffect(() => {
     if (isOnline && !isHost && currentTurnId === peerRef.current?.id && gameState === 'playing') {
